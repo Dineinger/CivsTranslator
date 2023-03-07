@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Surround.fs" />
+    <Compile Include="Patterns.fs" />
+    <Compile Include="Node.fs" />
+    <Compile Include="Item.fs" />
+    <Compile Include="CommonTypes.fs" />
+    <Compile Include="Indenting.fs" />
+    <Compile Include="ItemToText.fs" />
+    <Compile Include="ItemReader.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CisiColors\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
+  </ItemGroup>
+
+</Project>
