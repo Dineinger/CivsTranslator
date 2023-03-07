@@ -6,21 +6,35 @@ try
     Console.OutputEncoding = Text.Encoding.Unicode |> ignore
 finally
 
-let value =
-    ItemReader.read(
-        [|
-            "(coal_mine | de)"
-            "    \"Kohlemine\""
-            "        \"yes\""
-            "            * \"no\""
-            "        \"YOOO\""
-            "            \"Low\""
-            "(redstone_mine | de)"
-            "    \"Redstonemine\""
-        |]
-    )
-    |> ItemToText.convert
-    |> printfn "%s"
+ItemReader.read(
+    [|
+        "(estate2 | de)"
+        "    \"Villa Rang 2\""
+        "        \"Stufe\" >"
+        "            * \"9\""
+        "        \"Erzeugt\" >"
+        "            * \"1255.44M pro Tag\""
+        "        \"Verbraucht\" >"
+        "            * \"Goldene Karroten (21M)\""
+        "            * \"Kürbiskuchen (23M)\""
+        "            * \"Pilzsuppe (20M)\""
+        "            * \"Kuchen (21M)\""
+        "            * \"Kanincheneintopf (21M)\""
+        "(redstone_mine | de)"
+        "    \"Redstonemine\""
+        "        \"Stufe\" >"
+        "            * \"9\""
+        "        \"Erzeugt\" >"
+        "            * \"1255.44M pro Tag\""
+        "        \"Verbraucht\" >"
+        "            * \"Goldene Karroten (21M)\""
+        "            * \"Kürbiskuchen (23M)\""
+        "            * \"Pilzsuppe (20M)\""
+        "            * \"Kuchen (21M)\""
+        "            * \"Kanincheneintopf (21M)\""
+    |]
+)
+|> ItemToText.convert
+|> printfn "%s"
 
-value |> ignore
 printfn "exited"

@@ -14,13 +14,13 @@ let convertNodeLine (sb : StringBuilder) (node : Node) =
     sb.AppendSpace(2) |> ignore
     match nodeType with
     | NodeType.H1 ->
-        sb.Append("# ").Append(value).AppendLine()
+        raise(exn "this should not happen")
     | NodeType.Point ->
-        sb.Append("* ").Append(value).AppendLine()
+        sb.Append("§7  §x§7§c§7§f§9§3◉ §x§1§7§9§2§9§9").Append(value).AppendLine()
     | NodeType.ListHeader ->
-        sb.Append("## ").Append(value).AppendLine()
+        sb.Append("§x§b§c§c§0§c§c").Append(value).Append(':').AppendLine()
     | NodeType.Text ->
-        sb.Append(value).AppendLine()
+        sb.Append("§7").Append(value).AppendLine()
     | _ ->
         sb.Append("!!!").Append(value).AppendLine()
     |> ignore

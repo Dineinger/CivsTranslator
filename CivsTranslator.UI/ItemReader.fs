@@ -36,6 +36,12 @@ let parseNodeLine (item : string) (children : Node array) =
             Value = NodeValue.Text(trimmed[3..trimmed.Length - 2])
             Children = children
         }
+    elif Patterns.listHead.IsMatch(item) then
+        {
+            NodeType = NodeType.ListHeader
+            Value = NodeValue.Text(trimmed[1..trimmed.Length - 4])
+            Children = children
+        }
     elif isEnclosedWithQuoteMarks trimmed then
         {
             NodeType = NodeType.Text
