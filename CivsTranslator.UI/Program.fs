@@ -1,40 +1,42 @@
 ﻿open System
-open Dotgem.Text
+open System.IO
 open CivsTranslator
 
 try
-    Console.OutputEncoding = Text.Encoding.Unicode |> ignore
+    Console.OutputEncoding = Text.Encoding.UTF8 |> ignore
 finally
 
-ItemReader.read(
-    [|
-        "(estate2 | de)"
-        "    \"Villa Rang 2\""
-        "        \"Stufe\" >"
-        "            * \"9\""
-        "        \"Erzeugt\" >"
-        "            * \"1255.44M pro Tag\""
-        "        \"Verbraucht\" >"
-        "            * \"Goldene Karroten (21M)\""
-        "            * \"Kürbiskuchen (23M)\""
-        "            * \"Pilzsuppe (20M)\""
-        "            * \"Kuchen (21M)\""
-        "            * \"Kanincheneintopf (21M)\""
-        "(redstone_mine | de)"
-        "    \"Redstonemine\""
-        "        \"Stufe\" >"
-        "            * \"9\""
-        "        \"Erzeugt\" >"
-        "            * \"1255.44M pro Tag\""
-        "        \"Verbraucht\" >"
-        "            * \"Goldene Karroten (21M)\""
-        "            * \"Kürbiskuchen (23M)\""
-        "            * \"Pilzsuppe (20M)\""
-        "            * \"Kuchen (21M)\""
-        "            * \"Kanincheneintopf (21M)\""
-    |]
-)
-|> ItemToText.convert
-|> printfn "%s"
+printf "Quelle: "
+let source = Console.ReadLine()
+printf "Ziel: "
+let destination = Console.ReadLine()
+
+let content = File.ReadAllLines(source)
+let mcCode =
+    ItemReader.read(content)
+    |> ItemToText.convert
+
+printfn "%s" mcCode
+
+if File.Exists destination then
+    printfn "Datei existiert bereits: %s" destination
+    printfn "Wollen sie sie ersetzen? (y/n)"
+    let mutable run = true
+    while run do
+        printfn "Datei existiert bereits: %s" destination
+        printfn "Wollen sie sie ersetzen? (y/n)"
+        let key = Console.ReadLine()
+        match key with
+        | "y" ->
+            File.WriteAllText(destination, mcCode)
+            printfn "saved at: %s" destination
+            run <- false
+        | "n" ->
+            printfn "exits..."
+            run <- false
+        | _ -> ()
+else
+    File.WriteAllText(destination, mcCode)
+    printfn "saved at: %s" destination
 
 printfn "exited"
