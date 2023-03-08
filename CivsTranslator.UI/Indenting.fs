@@ -3,13 +3,17 @@ open System
 open System.Collections.Generic
 open Dotgem.Text
 
-module Helpers =
-    let getTabCount line =
+module private Helpers =
+    /// <summary>
+    /// Gets the space before the content of the line and returns the value devided by 4 (4 = tab).
+    /// Throws if the space is not devidable by 4
+    /// </summary>
+    let getTabCount line lineNumber =
         let spaceCount = CharCounter.GetLeadingSpaceCount line
         if spaceCount % 4 <> 0 then
-            ReadResult.Errors([|{Message = "Wrong indentation of lines. Lines must be indented by 4 spaces OR 1 tab or multiblied values of those."}|])
+            raise(Exception($"Wrong indentation, indentation must be devidable by 4. Line Number: {lineNumber}"))
         else
-            ReadResult.Some(spaceCount / 4)
+            spaceCount / 4
 
 type Line =
     {
@@ -46,11 +50,8 @@ let groupByIndention (text : string array) =
     let mutable indentationBefore = -1
     let mutable index = text.Length - 1
     while index >= 0 do
-        let line = text[index]
-        let tabIndex =
-            match Helpers.getTabCount (String.op_Implicit(line)) with
-            | ReadResult.Errors x -> raise(NotImplementedException())
-            | ReadResult.Some x -> x
+        let line = if String.IsNullOrWhiteSpace(text[index]) then String.Empty else text[index]
+        let tabIndex = Helpers.getTabCount (String.op_Implicit(line)) index
         if tabIndex >= indentationBefore || indentationBefore = -1 then
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
@@ -72,3 +73,7 @@ let groupByIndention (text : string array) =
     let root = buffer[0]
     root
 
+let groupToContainer input =
+    input
+    |> groupByIndention
+    |> groupInSubgroups
