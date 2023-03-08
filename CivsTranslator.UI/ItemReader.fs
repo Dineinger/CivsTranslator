@@ -35,7 +35,15 @@ let parseNodeLine (line : Indenting.Line) (children : Node array) =
     if Patterns.listPoint.IsMatch(item) then
         {
             NodeType = NodeType.Point
-            Value = NodeValue.Text(trimmed[3..trimmed.Length - 2])
+            Value =
+                if Patterns.listPointText.IsMatch(item) then
+                    NodeValue.Text(trimmed[3..trimmed.Length - 2])
+                elif Patterns.listPointYes.IsMatch(item) then
+                    NodeValue.YesNo true
+                elif Patterns.listPointNo.IsMatch(item) then
+                    NodeValue.YesNo false
+                else
+                    raise(NotImplementedException("This type of bullet point is unknown, maybe you miss quotes or curly braces."))
             Children = children
         }
     elif Patterns.listHead.IsMatch(item) then

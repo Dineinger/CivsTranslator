@@ -8,6 +8,13 @@ let private convertNodeValue (value) =
     | NodeValue.YesNo x -> if x then "Ja" else "Nein"
     | NodeValue.None -> raise(System.NotImplementedException())
 
+let getColorForListItem =
+    function
+    | NodeValue.Text _ -> "§x§1§7§9§2§9§9"
+    | NodeValue.YesNo v ->
+        if v then "§x§8§a§f§f§8§0" else "§x§f§f§9§5§8§0"
+    | NodeValue.None -> "§x§f§f§9§5§8§0"
+
 let convertNodeLine (sb : StringBuilder) (node : Node) =
     let nodeType = node.NodeType
     let value = node.Value |> convertNodeValue
@@ -16,7 +23,8 @@ let convertNodeLine (sb : StringBuilder) (node : Node) =
     | NodeType.H1 ->
         raise(exn "this should not happen")
     | NodeType.Point ->
-        sb.Append("§7  §x§7§c§7§f§9§3◉ §x§1§7§9§2§9§9").Append(value).AppendLine()
+        let color = getColorForListItem node.Value
+        sb.Append("§7  §x§7§c§7§f§9§3◉ ").Append(color).Append(value).AppendLine()
     | NodeType.ListHeader ->
         sb.Append("§x§b§c§c§0§c§c").Append(value).Append(':').AppendLine()
     | NodeType.Text ->
