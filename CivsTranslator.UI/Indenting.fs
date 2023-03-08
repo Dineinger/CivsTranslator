@@ -55,7 +55,7 @@ let groupByIndention (text : string array) =
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
             let currentBuffer = buffer[tabIndex] 
-            currentBuffer.Add(IndentedCode.Line { Value = line; LineNumber = index + 1})
+            currentBuffer.Insert(0, IndentedCode.Line { Value = line; LineNumber = index + 1})
         elif tabIndex = (indentationBefore - 1) then
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
