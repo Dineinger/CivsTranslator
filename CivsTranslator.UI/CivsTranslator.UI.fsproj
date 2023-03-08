@@ -20,10 +20,8 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
 
-  <ItemGroup />
-
   <ItemGroup>
-    <ProjectReference Include="..\..\CisiColors\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
+    <ProjectReference Include="..\..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
   </ItemGroup>
 
 </Project>
