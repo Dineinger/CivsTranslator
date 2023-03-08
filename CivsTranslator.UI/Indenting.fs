@@ -11,15 +11,20 @@ module Helpers =
         else
             ReadResult.Some(spaceCount / 4)
 
+type Line =
+    {
+        Value : string
+        LineNumber : int
+    }
 
 [<RequireQualifiedAccess>]
 type IndentedCode =
-    | Line of string
+    | Line of Line
     | Group of IndentedCode List
 
 type Container =
     {
-        Line : string
+        Line : Line
         Children : Container List
     }
 module Container =
@@ -27,11 +32,9 @@ module Container =
 
 let rec groupInSubgroups (groupedText : IndentedCode List) : Container List =
     let result = List<Container>()
-    let mutable lastLineAsContainer = ""
     for item in groupedText do
         match item with
         | IndentedCode.Line line ->
-            lastLineAsContainer <- line
             result.Add(Container.create line)
         | IndentedCode.Group group ->
             let group = groupInSubgroups group
@@ -52,7 +55,7 @@ let groupByIndention (text : string array) =
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
             let currentBuffer = buffer[tabIndex] 
-            currentBuffer.Add(IndentedCode.Line line)
+            currentBuffer.Add(IndentedCode.Line { Value = line; LineNumber = index + 1})
         elif tabIndex = (indentationBefore - 1) then
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
@@ -61,7 +64,7 @@ let groupByIndention (text : string array) =
             let currentBuffer = buffer[tabIndex]
             let indentedBuffer = buffer[tabIndex + 1]
             currentBuffer.Insert(0, IndentedCode.Group(indentedBuffer))
-            currentBuffer.Insert(0, IndentedCode.Line(line))
+            currentBuffer.Insert(0, IndentedCode.Line({ Value = line; LineNumber = index + 1}))
             buffer[tabIndex + 1] <- List<IndentedCode>()
         indentationBefore <- tabIndex
 
