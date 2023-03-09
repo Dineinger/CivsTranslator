@@ -9,7 +9,6 @@ type NodeType =
     | Text
     | ListHeader
     | Point
-    | Unknown
 
 [<RequireQualifiedAccess>]
 type NodeValue =
@@ -57,7 +56,6 @@ module Node =
             sb.Append "* " |> ignore
             sb.Append(Helpers.addNodeText sb node) |> ignore
             sb.AppendLine() |> ignore
-        | _ -> raise(System.NotImplementedException())
 
     let findNextChildWithSameIndentation currentIndentation (node : Node) : Node =
         raise(System.NotImplementedException())

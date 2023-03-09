@@ -29,8 +29,6 @@ let convertNodeLine (sb : StringBuilder) (node : Node) =
         sb.Append("§x§b§c§c§0§c§c").Append(value).Append(':').AppendLine()
     | NodeType.Text ->
         sb.Append("§7").Append(value).AppendLine()
-    | _ ->
-        sb.Append("!!!").Append(value).AppendLine()
     |> ignore
 
 let rec convertNode (sb : StringBuilder) (node : Node) =
