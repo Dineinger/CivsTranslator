@@ -42,7 +42,7 @@ let convertItem (sb : StringBuilder) (item : Item) =
     let key = item.Key
     let name = item.Name
     sb.Append(key).Append("-name: ") |> ignore
-    Surround.withQuotes sb name
+    Surround.withQuotes sb ($"§f{name}")
     sb.AppendLine() |> ignore
     sb.Append(key).AppendLine("-desc: |") |> ignore
     for node in item.Description.Children do
