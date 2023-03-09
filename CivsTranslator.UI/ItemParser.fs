@@ -1,19 +1,9 @@
-﻿module CivsTranslator.ItemReader
+﻿module CivsTranslator.ItemParser
 open System
 open System.Collections.Generic
 open System.Linq
 
-let cleanList list : string array option =
-    let result = [|
-        for line in list do
-            if not(String.IsNullOrWhiteSpace(line)) then
-                line
-    |]
-
-    if result.Length = 0 then option.None
-    else Some result
-
-let parseDefinitionLine (line : Indenting.Line) : DefinitionLine =
+let private parseDefinitionLine (line : Indenting.Line) : DefinitionLine =
     let (line, number) = line.Value , line.LineNumber
     if line.StartsWith('(') && line.EndsWith(')') then
         let parts = line.Trim([| '(' ; ')' |]).Split(" | ")
@@ -26,10 +16,10 @@ let parseDefinitionLine (line : Indenting.Line) : DefinitionLine =
     else
         raise(Exception $"definition line does not start with a ( and ends with a ) (Line Number {number})")
 
-let isEnclosedWithQuoteMarks (line : string) =
+let private isEnclosedWithQuoteMarks (line : string) =
     line.StartsWith("\"") && line.EndsWith("\"") && line.Count(fun s -> s = '"') = 2
 
-let parseNodeLine (line : Indenting.Line) (children : Node array) =
+let private parseNodeLine (line : Indenting.Line) (children : Node array) =
     let item = line.Value
     let trimmed = item.Trim()
     if Patterns.listPoint.IsMatch(item) then
@@ -61,7 +51,7 @@ let parseNodeLine (line : Indenting.Line) (children : Node array) =
     else
         raise(NotImplementedException($"Unknown line syntax at line: {line.LineNumber}"))
 
-let rec parseNodes (items : Indenting.Container List) : Node array =
+let rec private parseNodes (items : Indenting.Container List) : Node array =
     [|
         for item in items do
             let lineRaw = item.Line
@@ -71,7 +61,7 @@ let rec parseNodes (items : Indenting.Container List) : Node array =
             line
     |]
 
-let parseRootNode (item : Indenting.Container) =
+let private parseRootNode (item : Indenting.Container) =
     let line = item.Line.Value
     let name = line.Trim().Trim('"')
     let subNodes = parseNodes item.Children
@@ -83,7 +73,7 @@ let parseRootNode (item : Indenting.Container) =
         }
     (name, rootNode)
 
-let parseItems (items : Indenting.Container List) : Item array =
+let parseItems (items : Indenting.Container seq) : Item array =
     [|
         for item in items do
             let line = item.Line
@@ -98,16 +88,9 @@ let parseItems (items : Indenting.Container List) : Item array =
                 }
     |]
 
-let rec display index (items : Indenting.Container List) : unit =
-    for item in items do
-        printfn "%s" item.Line.Value
-        display (index + 1) item.Children
-
-let read (text : string array) : Item array =
-    let items =
-        text
-        |> Indenting.groupByIndention
-        |> Indenting.groupInSubgroups
-        |> parseItems
-
-    items
+let parse (text : string array) : Item array =
+    text
+    |> Indenting.groupByIndention
+    |> Indenting.groupInSubgroups
+    |> Indenting.filterOutEmptyLines
+    |> parseItems

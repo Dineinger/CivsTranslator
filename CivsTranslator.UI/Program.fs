@@ -15,7 +15,7 @@ try
 
     let content = File.ReadAllLines(source)
     let mcCode =
-        ItemReader.read(content)
+        ItemParser.parse(content)
         |> ItemToText.convert
 
     printfn "%s" mcCode

@@ -16,7 +16,7 @@
     <Compile Include="CommonTypes.fs" />
     <Compile Include="Indenting.fs" />
     <Compile Include="ItemToText.fs" />
-    <Compile Include="ItemReader.fs" />
+    <Compile Include="ItemParser.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

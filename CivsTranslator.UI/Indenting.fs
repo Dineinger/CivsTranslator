@@ -77,3 +77,11 @@ let groupToContainer input =
     input
     |> groupByIndention
     |> groupInSubgroups
+
+let filterOutEmptyLines (list : Container seq) =
+    [|
+        for item in list do
+            if not(String.IsNullOrWhiteSpace(item.Line.Value)) then
+                item
+    |]
+        
