@@ -16,7 +16,7 @@ module Item =
             Description =
                 {
                     NodeType = NodeType.Text
-                    Value = NodeValue.Text ""
+                    Value = { Values = [| TextValue.Text("") |] }
                     Children = [||]
                 }
         }

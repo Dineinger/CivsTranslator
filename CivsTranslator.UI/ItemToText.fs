@@ -2,34 +2,61 @@
 open System.Text
 open Dotgem.Text
 
-let private convertNodeValue (value) =
-    match value with
-    | NodeValue.Text t -> t
-    | NodeValue.YesNo x -> if x then "Ja" else "Nein"
-    | NodeValue.None -> raise(System.NotImplementedException())
+module ColorCodes =
+    let getColorFor nodeType textValue =
+        match nodeType with
+        | NodeType.H1 -> "§f"
+        | NodeType.Text ->
+            match textValue with
+            | TextValue.Text _ -> "§7"
+            | TextValue.YesNo x ->
+                match x with
+                | YesNo.Yes -> "§x§8§a§f§f§8§0"
+                | YesNo.No -> "§x§f§f§9§5§8§0"
+            | TextValue.Extensive _ -> ""
+        | NodeType.ListHeader ->
+            match textValue with
+            | TextValue.Text _ -> "§x§b§c§c§0§c§c"
+            | TextValue.YesNo x ->
+                match x with
+                | YesNo.Yes -> "§x§8§a§f§f§8§0"
+                | YesNo.No -> "§x§f§f§9§5§8§0"
+            | TextValue.Extensive _ -> ""
+        | NodeType.Point ->
+            match textValue with
+            | TextValue.Text _ -> "§x§1§7§9§2§9§9"
+            | TextValue.YesNo x ->
+                match x with
+                | YesNo.Yes -> "§x§8§a§f§f§8§0"
+                | YesNo.No -> "§x§f§f§9§5§8§0"
+            | TextValue.Extensive _ -> ""
 
-let getColorForListItem =
-    function
-    | NodeValue.Text _ -> "§x§1§7§9§2§9§9"
-    | NodeValue.YesNo v ->
-        if v then "§x§8§a§f§f§8§0" else "§x§f§f§9§5§8§0"
-    | NodeValue.None -> "§x§f§f§9§5§8§0"
+let rec coloriseText (sb : StringBuilder) (nodeType) (value : ExtensiveNodeValue) =
+    for v in value.Values do
+        match v with
+        | TextValue.Text t ->
+            sb.Append(ColorCodes.getColorFor nodeType v).Append(t) |> ignore
+        | TextValue.YesNo x -> sb.Append(ColorCodes.getColorFor nodeType v).Append(YesNo.toGerman(x)) |> ignore
+        | TextValue.Extensive x ->
+            coloriseText sb nodeType x
 
 let convertNodeLine (sb : StringBuilder) (node : Node) =
     let nodeType = node.NodeType
-    let value = node.Value |> convertNodeValue
+    let value = node.Value
     sb.AppendSpace(2) |> ignore
     match nodeType with
     | NodeType.H1 ->
         raise(exn "this should not happen")
     | NodeType.Point ->
-        let color = getColorForListItem node.Value
-        sb.Append("§7  §x§7§c§7§f§9§3◉ ").Append(color).Append(value).AppendLine()
+        sb.Append("§7  §x§7§c§7§f§9§3◉ ") |> ignore
+        coloriseText sb nodeType value
+        sb.AppendLine() |> ignore
     | NodeType.ListHeader ->
-        sb.Append("§x§b§c§c§0§c§c").Append(value).Append(':').AppendLine()
+        coloriseText sb nodeType value
+        sb.AppendLine() |> ignore
     | NodeType.Text ->
-        sb.Append("§7").Append(value).AppendLine()
-    |> ignore
+        coloriseText sb nodeType value
+        sb.AppendLine() |> ignore
 
 let rec convertNode (sb : StringBuilder) (node : Node) =
     convertNodeLine sb node

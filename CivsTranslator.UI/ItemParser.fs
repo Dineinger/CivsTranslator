@@ -27,11 +27,11 @@ let private parseNodeLine (line : Indenting.Line) (children : Node array) =
             NodeType = NodeType.Point
             Value =
                 if Patterns.listPointText.IsMatch(item) then
-                    NodeValue.Text(trimmed[3..trimmed.Length - 2])
+                    { Values = [|TextValue.Text(trimmed[3..trimmed.Length - 2])|] }
                 elif Patterns.listPointYes.IsMatch(item) then
-                    NodeValue.YesNo true
+                    { Values = [| TextValue.YesNo(YesNo.Yes) |] }
                 elif Patterns.listPointNo.IsMatch(item) then
-                    NodeValue.YesNo false
+                    { Values = [| TextValue.YesNo(YesNo.No) |] }
                 else
                     raise(NotImplementedException("This type of bullet point is unknown, maybe you miss quotes or curly braces."))
             Children = children
@@ -39,13 +39,13 @@ let private parseNodeLine (line : Indenting.Line) (children : Node array) =
     elif Patterns.listHead.IsMatch(item) then
         {
             NodeType = NodeType.ListHeader
-            Value = NodeValue.Text(trimmed[1..trimmed.Length - 4])
+            Value = { Values = [| TextValue.Text(trimmed[1..trimmed.Length - 4]) |]}
             Children = children
         }
     elif isEnclosedWithQuoteMarks trimmed then
         {
             NodeType = NodeType.Text
-            Value = NodeValue.Text(trimmed[1..trimmed.Length - 2])
+            Value = { Values = [| TextValue.Text(trimmed[1..trimmed.Length - 2]) |] }
             Children = children
         }
     else
@@ -68,7 +68,7 @@ let private parseRootNode (item : Indenting.Container) =
     let rootNode =
         {
             NodeType = NodeType.H1
-            Value = NodeValue.Text name
+            Value = { Values = [| TextValue.Text name |] }
             Children = subNodes
         }
     (name, rootNode)
