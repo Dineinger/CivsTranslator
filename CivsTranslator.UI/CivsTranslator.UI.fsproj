@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Dotgem\src\Dotgem.Colors\Dotgem.Colors.csproj" />
     <ProjectReference Include="..\..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
   </ItemGroup>
 

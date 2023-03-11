@@ -1,35 +1,50 @@
 ﻿module CivsTranslator.ItemToText
+open System
 open System.Text
 open Dotgem.Text
 
 module ColorCodes =
+    module McColor =
+        let white = "§f"
+        let lightGray = "§7"
+        let green = "§x§8§a§f§f§8§0"
+        let red = "§x§f§f§9§5§8§0"
+        let lightGrayBlue = "§x§b§c§c§0§c§c"
+        let darkCyan = "§x§1§7§9§2§9§9"
+
+    let h1 = McColor.white
+
+    /// <summary> Avoid providing <see cref="TextValue.Extensive" />, it only returns an empty string </summary>
     let getColorFor nodeType textValue =
         match nodeType with
-        | NodeType.H1 -> "§f"
+        | NodeType.H1 -> h1
         | NodeType.Text ->
             match textValue with
-            | TextValue.Text _ -> "§7"
+            | TextValue.Text _ -> McColor.lightGray
             | TextValue.YesNo x ->
                 match x with
-                | YesNo.Yes -> "§x§8§a§f§f§8§0"
-                | YesNo.No -> "§x§f§f§9§5§8§0"
-            | TextValue.Extensive _ -> ""
+                | YesNo.Yes -> McColor.green
+                | YesNo.No -> McColor.red
+            | TextValue.Extensive _ -> String.Empty
         | NodeType.ListHeader ->
             match textValue with
-            | TextValue.Text _ -> "§x§b§c§c§0§c§c"
+            | TextValue.Text _ -> McColor.lightGrayBlue
             | TextValue.YesNo x ->
                 match x with
-                | YesNo.Yes -> "§x§8§a§f§f§8§0"
-                | YesNo.No -> "§x§f§f§9§5§8§0"
-            | TextValue.Extensive _ -> ""
+                | YesNo.Yes -> McColor.green
+                | YesNo.No -> McColor.red
+            | TextValue.Extensive _ -> String.Empty
         | NodeType.Point ->
             match textValue with
-            | TextValue.Text _ -> "§x§1§7§9§2§9§9"
+            | TextValue.Text _ -> McColor.darkCyan
             | TextValue.YesNo x ->
                 match x with
-                | YesNo.Yes -> "§x§8§a§f§f§8§0"
-                | YesNo.No -> "§x§f§f§9§5§8§0"
-            | TextValue.Extensive _ -> ""
+                | YesNo.Yes -> McColor.green
+                | YesNo.No -> McColor.red
+            | TextValue.Extensive _ -> String.Empty
+
+module McTextStructures =
+    let bulletPoint = "§7  §x§7§c§7§f§9§3◉ "
 
 let rec coloriseText (sb : StringBuilder) (nodeType) (value : ExtensiveNodeValue) =
     for v in value.Values do
@@ -48,11 +63,12 @@ let convertNodeLine (sb : StringBuilder) (node : Node) =
     | NodeType.H1 ->
         raise(exn "this should not happen")
     | NodeType.Point ->
-        sb.Append("§7  §x§7§c§7§f§9§3◉ ") |> ignore
+        sb.Append(McTextStructures.bulletPoint) |> ignore
         coloriseText sb nodeType value
         sb.AppendLine() |> ignore
     | NodeType.ListHeader ->
         coloriseText sb nodeType value
+        sb.Append(":") |> ignore
         sb.AppendLine() |> ignore
     | NodeType.Text ->
         coloriseText sb nodeType value
@@ -67,7 +83,7 @@ let convertItem (sb : StringBuilder) (item : Item) =
     let key = item.Key
     let name = item.Name
     sb.Append(key).Append("-name: ") |> ignore
-    Surround.withQuotes sb ($"§f{name}")
+    Surround.withQuotes sb ($"{ColorCodes.h1}{name}")
     sb.AppendLine() |> ignore
     sb.Append(key).AppendLine("-desc: |") |> ignore
     for node in item.Description.Children do
