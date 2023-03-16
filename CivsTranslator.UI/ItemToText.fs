@@ -1,29 +1,78 @@
 ﻿module CivsTranslator.ItemToText
+open System
 open System.Text
 open Dotgem.Text
 
-let private convertNodeValue (value) =
-    match value with
-    | NodeValue.Text t -> t
-    | NodeValue.YesNo x -> if x then "Ja" else "Nein"
-    | NodeValue.None -> raise(System.NotImplementedException())
+module ColorCodes =
+    module McColor =
+        let white = "§f"
+        let lightGray = "§7"
+        let green = "§x§8§a§f§f§8§0"
+        let red = "§x§f§f§9§5§8§0"
+        let lightGrayBlue = "§x§b§c§c§0§c§c"
+        let darkCyan = "§x§1§7§9§2§9§9"
+
+    let h1 = McColor.white
+
+    /// <summary> Avoid providing <see cref="TextValue.Extensive" />, it only returns an empty string </summary>
+    let getColorFor nodeType textValue =
+        match nodeType with
+        | NodeType.H1 -> h1
+        | NodeType.Text ->
+            match textValue with
+            | TextValue.Text _ -> McColor.lightGray
+            | TextValue.YesNo x ->
+                match x with
+                | YesNo.Yes -> McColor.green
+                | YesNo.No -> McColor.red
+            | TextValue.Extensive _ -> String.Empty
+        | NodeType.ListHeader ->
+            match textValue with
+            | TextValue.Text _ -> McColor.lightGrayBlue
+            | TextValue.YesNo x ->
+                match x with
+                | YesNo.Yes -> McColor.green
+                | YesNo.No -> McColor.red
+            | TextValue.Extensive _ -> String.Empty
+        | NodeType.Point ->
+            match textValue with
+            | TextValue.Text _ -> McColor.darkCyan
+            | TextValue.YesNo x ->
+                match x with
+                | YesNo.Yes -> McColor.green
+                | YesNo.No -> McColor.red
+            | TextValue.Extensive _ -> String.Empty
+
+module McTextStructures =
+    let bulletPoint = "§7  §x§7§c§7§f§9§3◉ "
+
+let rec coloriseText (sb : StringBuilder) (nodeType) (value : ExtensiveNodeValue) =
+    for v in value.Values do
+        match v with
+        | TextValue.Text t ->
+            sb.Append(ColorCodes.getColorFor nodeType v).Append(t) |> ignore
+        | TextValue.YesNo x -> sb.Append(ColorCodes.getColorFor nodeType v).Append(YesNo.toGerman(x)) |> ignore
+        | TextValue.Extensive x ->
+            coloriseText sb nodeType x
 
 let convertNodeLine (sb : StringBuilder) (node : Node) =
     let nodeType = node.NodeType
-    let value = node.Value |> convertNodeValue
+    let value = node.Value
     sb.AppendSpace(2) |> ignore
     match nodeType with
     | NodeType.H1 ->
-        sb.Append("# ").Append(value).AppendLine()
+        raise(exn "this should not happen")
     | NodeType.Point ->
-        sb.Append("* ").Append(value).AppendLine()
+        sb.Append(McTextStructures.bulletPoint) |> ignore
+        coloriseText sb nodeType value
+        sb.AppendLine() |> ignore
     | NodeType.ListHeader ->
-        sb.Append("## ").Append(value).AppendLine()
+        coloriseText sb nodeType value
+        sb.Append(":") |> ignore
+        sb.AppendLine() |> ignore
     | NodeType.Text ->
-        sb.Append(value).AppendLine()
-    | _ ->
-        sb.Append("!!!").Append(value).AppendLine()
-    |> ignore
+        coloriseText sb nodeType value
+        sb.AppendLine() |> ignore
 
 let rec convertNode (sb : StringBuilder) (node : Node) =
     convertNodeLine sb node
@@ -34,7 +83,7 @@ let convertItem (sb : StringBuilder) (item : Item) =
     let key = item.Key
     let name = item.Name
     sb.Append(key).Append("-name: ") |> ignore
-    Surround.withQuotes sb name
+    Surround.withQuotes sb ($"{ColorCodes.h1}{name}")
     sb.AppendLine() |> ignore
     sb.Append(key).AppendLine("-desc: |") |> ignore
     for node in item.Description.Children do

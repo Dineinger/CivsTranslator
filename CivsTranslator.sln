@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CivsTranslator.UI", "CivsTranslator.UI\CivsTranslator.UI.fsproj", "{7B934C64-CDE4-4CC1-9341-B44EC6BCD503}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "CivsTranslator.UI", "CivsTranslator.UI\CivsTranslator.UI.fsproj", "{7B934C64-CDE4-4CC1-9341-B44EC6BCD503}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotgem.Text", "..\CisiColors\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj", "{D3809019-06E3-4D50-AB93-AEDF6FB67F3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotgem.Text", "..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj", "{EBF5BA2A-0CE2-4AE7-AB44-201C51EB8C9B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotgem.Colors", "..\Dotgem\src\Dotgem.Colors\Dotgem.Colors.csproj", "{79A923B8-0FC8-41FD-969E-95C64092FDA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		{7B934C64-CDE4-4CC1-9341-B44EC6BCD503}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B934C64-CDE4-4CC1-9341-B44EC6BCD503}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B934C64-CDE4-4CC1-9341-B44EC6BCD503}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D3809019-06E3-4D50-AB93-AEDF6FB67F3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3809019-06E3-4D50-AB93-AEDF6FB67F3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3809019-06E3-4D50-AB93-AEDF6FB67F3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3809019-06E3-4D50-AB93-AEDF6FB67F3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF5BA2A-0CE2-4AE7-AB44-201C51EB8C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF5BA2A-0CE2-4AE7-AB44-201C51EB8C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF5BA2A-0CE2-4AE7-AB44-201C51EB8C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF5BA2A-0CE2-4AE7-AB44-201C51EB8C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

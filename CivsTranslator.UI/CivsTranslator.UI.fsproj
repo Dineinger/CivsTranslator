@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="TestText\TestText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Surround.fs" />
     <Compile Include="Patterns.fs" />
     <Compile Include="Node.fs" />
@@ -13,12 +16,13 @@
     <Compile Include="CommonTypes.fs" />
     <Compile Include="Indenting.fs" />
     <Compile Include="ItemToText.fs" />
-    <Compile Include="ItemReader.fs" />
+    <Compile Include="ItemParser.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CisiColors\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
+    <ProjectReference Include="..\..\Dotgem\src\Dotgem.Colors\Dotgem.Colors.csproj" />
+    <ProjectReference Include="..\..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
   </ItemGroup>
 
 </Project>

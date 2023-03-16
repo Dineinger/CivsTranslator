@@ -1,0 +1,12 @@
+﻿(estate2 | de)
+    "Villa Rang 2"
+        "Stufe" >
+            * "9"
+        "Erzeugt" >
+            * "1255.44ℳ pro Tag"
+        "Verbraucht" >
+            * "Goldene Karroten (21ℳ)"
+            * "Kürbiskuchen (23ℳ)"
+            * "Pilzsuppe (20ℳ)"
+            * "Kuchen (21ℳ)"
+            * "Kanincheneintopf (21ℳ)"

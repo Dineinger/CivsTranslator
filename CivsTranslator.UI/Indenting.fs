@@ -3,23 +3,32 @@ open System
 open System.Collections.Generic
 open Dotgem.Text
 
-module Helpers =
-    let getTabCount line =
+module private Helpers =
+    /// <summary>
+    /// Gets the space before the content of the line and returns the value devided by 4 (4 = tab).
+    /// Throws if the space is not devidable by 4
+    /// </summary>
+    let getTabCount line lineNumber =
         let spaceCount = CharCounter.GetLeadingSpaceCount line
         if spaceCount % 4 <> 0 then
-            ReadResult.Errors([|{Message = "Wrong indentation of lines. Lines must be indented by 4 spaces OR 1 tab or multiblied values of those."}|])
+            raise(Exception($"Wrong indentation, indentation must be devidable by 4. Line Number: {lineNumber}"))
         else
-            ReadResult.Some(spaceCount / 4)
+            spaceCount / 4
 
+type Line =
+    {
+        Value : string
+        LineNumber : int
+    }
 
 [<RequireQualifiedAccess>]
 type IndentedCode =
-    | Line of string
+    | Line of Line
     | Group of IndentedCode List
 
 type Container =
     {
-        Line : string
+        Line : Line
         Children : Container List
     }
 module Container =
@@ -27,11 +36,9 @@ module Container =
 
 let rec groupInSubgroups (groupedText : IndentedCode List) : Container List =
     let result = List<Container>()
-    let mutable lastLineAsContainer = ""
     for item in groupedText do
         match item with
         | IndentedCode.Line line ->
-            lastLineAsContainer <- line
             result.Add(Container.create line)
         | IndentedCode.Group group ->
             let group = groupInSubgroups group
@@ -43,16 +50,13 @@ let groupByIndention (text : string array) =
     let mutable indentationBefore = -1
     let mutable index = text.Length - 1
     while index >= 0 do
-        let line = text[index]
-        let tabIndex =
-            match Helpers.getTabCount (String.op_Implicit(line)) with
-            | ReadResult.Errors x -> raise(NotImplementedException())
-            | ReadResult.Some x -> x
+        let line = if String.IsNullOrWhiteSpace(text[index]) then String.Empty else text[index]
+        let tabIndex = Helpers.getTabCount (String.op_Implicit(line)) index
         if tabIndex >= indentationBefore || indentationBefore = -1 then
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
             let currentBuffer = buffer[tabIndex] 
-            currentBuffer.Add(IndentedCode.Line line)
+            currentBuffer.Insert(0, IndentedCode.Line { Value = line; LineNumber = index + 1})
         elif tabIndex = (indentationBefore - 1) then
             if not(buffer.ContainsKey tabIndex) then
                 buffer.Add(tabIndex, List<IndentedCode>())
@@ -61,7 +65,7 @@ let groupByIndention (text : string array) =
             let currentBuffer = buffer[tabIndex]
             let indentedBuffer = buffer[tabIndex + 1]
             currentBuffer.Insert(0, IndentedCode.Group(indentedBuffer))
-            currentBuffer.Insert(0, IndentedCode.Line(line))
+            currentBuffer.Insert(0, IndentedCode.Line({ Value = line; LineNumber = index + 1}))
             buffer[tabIndex + 1] <- List<IndentedCode>()
         indentationBefore <- tabIndex
 
@@ -69,3 +73,15 @@ let groupByIndention (text : string array) =
     let root = buffer[0]
     root
 
+let groupToContainer input =
+    input
+    |> groupByIndention
+    |> groupInSubgroups
+
+let filterOutEmptyLines (list : Container seq) =
+    [|
+        for item in list do
+            if not(String.IsNullOrWhiteSpace(item.Line.Value)) then
+                item
+    |]
+        
