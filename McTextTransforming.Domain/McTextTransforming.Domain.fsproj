@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Language.fs" />
+    <Compile Include="LineTypes\DefinitionLine.fs" />
+    <Compile Include="Patterns.fs" />
+    <Compile Include="SpecialValues\YesNo.fs" />
+    <Compile Include="Node.fs" />
+    <Compile Include="Item.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
+  </ItemGroup>
+
+</Project>

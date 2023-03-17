@@ -1,5 +1,4 @@
-﻿namespace CivsTranslator
-
+﻿namespace McTextTransforming
 open System.Text
 open Dotgem.Text
 
@@ -11,20 +10,11 @@ type NodeType =
     | Point
 
 [<RequireQualifiedAccess>]
-type YesNo =
-    | No
-    | Yes
-module YesNo =
-    let asBool x = match x with | YesNo.Yes -> true | YesNo.No -> false
-    let toGerman x = match x with | YesNo.Yes -> "Ja" | YesNo.No -> "Nein"
-
-[<RequireQualifiedAccess>]
 type TextValue =
     | Text of string
     | YesNo of YesNo
     | Extensive of ExtensiveNodeValue
-and
-    ExtensiveNodeValue =
+and ExtensiveNodeValue =
     {
         Values : TextValue array
     }
@@ -36,16 +26,16 @@ type Node =
         Children : Node array
     }
 
-module private Helpers =        
-    let rec addNodeText (sb : StringBuilder) (values : TextValue array) =
-        for value in values do
-            match value with
-            | TextValue.Text t ->
-                sb.Append('"').Append(t).Append('"') |> ignore
-            | TextValue.YesNo x -> sb.Append(if YesNo.asBool(x) then "{yes}" else "{no}") |> ignore
-            | TextValue.Extensive x -> addNodeText sb x.Values
-
 module Node =
+    module private Helpers =        
+        let rec addNodeText (sb : StringBuilder) (values : TextValue array) =
+            for value in values do
+                match value with
+                | TextValue.Text t ->
+                    sb.Append('"').Append(t).Append('"') |> ignore
+                | TextValue.YesNo x -> sb.Append(if YesNo.asBool(x) then "{yes}" else "{no}") |> ignore
+                | TextValue.Extensive x -> addNodeText sb x.Values
+
     let rec toString (sb : StringBuilder) tabIndex (node: Node) : unit =
         match node.NodeType with
         | NodeType.H1 ->

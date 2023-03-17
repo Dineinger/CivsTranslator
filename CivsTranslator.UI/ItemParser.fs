@@ -2,6 +2,7 @@
 open System
 open System.Collections.Generic
 open System.Linq
+open McTextTransforming
 
 let private parseDefinitionLine (line : Indenting.Line) : DefinitionLine =
     let (line, number) = line.Value , line.LineNumber

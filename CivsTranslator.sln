@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotgem.Text", "..\Dotgem\sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dotgem.Colors", "..\Dotgem\src\Dotgem.Colors\Dotgem.Colors.csproj", "{79A923B8-0FC8-41FD-969E-95C64092FDA6}"
 EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "McTextTransforming.Domain", "McTextTransforming.Domain\McTextTransforming.Domain.fsproj", "{A69EC1E8-A522-4144-9761-B7BF82232579}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dotgem.Text.Grouping", "..\Dotgem\src\Dotgem.Text.Grouping\Dotgem.Text.Grouping.csproj", "{D3949A84-11B9-4530-A8CB-DA78550062FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79A923B8-0FC8-41FD-969E-95C64092FDA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A69EC1E8-A522-4144-9761-B7BF82232579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A69EC1E8-A522-4144-9761-B7BF82232579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A69EC1E8-A522-4144-9761-B7BF82232579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A69EC1E8-A522-4144-9761-B7BF82232579}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3949A84-11B9-4530-A8CB-DA78550062FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3949A84-11B9-4530-A8CB-DA78550062FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3949A84-11B9-4530-A8CB-DA78550062FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3949A84-11B9-4530-A8CB-DA78550062FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@
 open System
 open System.Text
 open Dotgem.Text
+open McTextTransforming
 
 module ColorCodes =
     module McColor =
@@ -83,7 +84,7 @@ let convertItem (sb : StringBuilder) (item : Item) =
     let key = item.Key
     let name = item.Name
     sb.Append(key).Append("-name: ") |> ignore
-    Surround.withQuotes sb ($"{ColorCodes.h1}{name}")
+    sb.WithQuotationmarks $"{ColorCodes.h1}{name}" |> ignore
     sb.AppendLine() |> ignore
     sb.Append(key).AppendLine("-desc: |") |> ignore
     for node in item.Description.Children do

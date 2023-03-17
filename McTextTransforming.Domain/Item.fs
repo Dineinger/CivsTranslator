@@ -1,4 +1,4 @@
-﻿namespace CivsTranslator
+﻿namespace McTextTransforming
 open System.Text
 
 type Item =
@@ -16,7 +16,13 @@ module Item =
             Description =
                 {
                     NodeType = NodeType.Text
-                    Value = { Values = [| TextValue.Text("") |] }
+                    Value =
+                        {
+                            Values =
+                                [|
+                                    TextValue.Text("")
+                                |]
+                        }
                     Children = [||]
                 }
         }
