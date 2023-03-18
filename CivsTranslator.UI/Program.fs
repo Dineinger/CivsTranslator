@@ -1,7 +1,7 @@
 ﻿module Program
 open System
 open System.IO
-open CivsTranslator
+open McTextTransforming.TextGeneration
 open McTextTransforming.Parsing
 
 module FileSaver =

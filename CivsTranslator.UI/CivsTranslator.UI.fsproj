@@ -9,7 +9,6 @@
     <Content Include="TestText\TestText.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Include="ItemToText.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -18,6 +17,7 @@
     <ProjectReference Include="..\..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
     <ProjectReference Include="..\McTextTransforming.Domain\McTextTransforming.Domain.fsproj" />
     <ProjectReference Include="..\McTextTransforming.Parsing\McTextTransforming.Parsing.fsproj" />
+    <ProjectReference Include="..\McTextTransforming.TextGeneration\McTextTransforming.TextGeneration.fsproj" />
   </ItemGroup>
 
 </Project>

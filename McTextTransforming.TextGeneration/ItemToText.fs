@@ -1,4 +1,4 @@
-﻿module CivsTranslator.ItemToText
+﻿module McTextTransforming.TextGeneration.ItemToText
 open System
 open System.Text
 open Dotgem.Text
