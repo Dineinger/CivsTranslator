@@ -1,8 +1,7 @@
-﻿module CivsTranslator.Indenting
+﻿module McTextTransforming.Parsing.Indenting
 open System
 open System.Collections.Generic
 open Dotgem.Text
-open System.Collections.ObjectModel
 
 module private Helpers =
     /// <summary>
@@ -26,7 +25,6 @@ type Line =
 type IndentedCode =
     | Line of Line
     | Group of IndentedCode List
-
 
 type Container =
     {

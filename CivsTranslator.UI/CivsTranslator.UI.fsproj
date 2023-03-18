@@ -9,9 +9,7 @@
     <Content Include="TestText\TestText.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Compile Include="Indenting.fs" />
     <Compile Include="ItemToText.fs" />
-    <Compile Include="ItemParser.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
@@ -19,6 +17,7 @@
     <ProjectReference Include="..\..\Dotgem\src\Dotgem.Colors\Dotgem.Colors.csproj" />
     <ProjectReference Include="..\..\Dotgem\src\Dotgem.Text\Dotgem.Text.csproj" />
     <ProjectReference Include="..\McTextTransforming.Domain\McTextTransforming.Domain.fsproj" />
+    <ProjectReference Include="..\McTextTransforming.Parsing\McTextTransforming.Parsing.fsproj" />
   </ItemGroup>
 
 </Project>

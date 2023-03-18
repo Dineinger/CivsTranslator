@@ -2,6 +2,7 @@
 open System
 open System.IO
 open CivsTranslator
+open McTextTransforming.Parsing
 
 module FileSaver =
     let save (path : string) doOverride (content : string) =

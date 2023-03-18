@@ -1,4 +1,4 @@
-﻿module CivsTranslator.ItemParser
+﻿module McTextTransforming.Parsing.ItemParser
 open System
 open System.Collections.Generic
 open System.Linq
