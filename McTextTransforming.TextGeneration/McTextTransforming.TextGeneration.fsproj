@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Colors.fs" />
     <Compile Include="ItemToText.fs" />
   </ItemGroup>
 
