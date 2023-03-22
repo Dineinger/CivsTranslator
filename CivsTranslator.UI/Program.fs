@@ -37,48 +37,64 @@ module FileSaver =
             save destination false mcCode
             printfn "Speicherort: %s" destination
 
-let runFileConverterWithPaths source destination saver =
+let runFileConverterWithPaths textColors source destination saver =
+    let generator = McTextGenerator(textColors)
+
     let content = File.ReadAllLines(source)
     let mcCode =
         ItemParser.parse(content)
-        |> ItemToText.convert
+        |> generator.Generate
     saver destination mcCode
 
-let runFileConverter() =
+let runFileConverter textColors =
     printf "Quelle: "
     let source = Console.ReadLine()
     printf "Ziel: "
     let destination = Console.ReadLine()
-    let mcCode = runFileConverterWithPaths source destination FileSaver.saver
+    runFileConverterWithPaths textColors source destination FileSaver.saver
 
     printfn "exited"
 
-let mainMenu() =
+let mainMenu textColors =
     printfn "(1) exit"
     printfn "(2) open file converter"
     let decision = Console.ReadLine()
     match decision with
     | "1" -> ()
-    | "2" -> runFileConverter()
+    | "2" -> runFileConverter textColors
     | _ -> ()
 
 
-let processArguments (args : string array) =
+let processArguments textColors (args : string array) =
+    let runFileConverter = runFileConverter textColors
     match args with
-    | null -> runFileConverter()
-    | x when x.Length = 0 -> runFileConverter()
+    | null -> runFileConverter
+    | x when x.Length = 0 -> runFileConverter
     | x when x.Length = 3 ->
         match x with
         | x when x[0] = "convert" ->
-            runFileConverterWithPaths x[1] x[2] FileSaver.saver
+            runFileConverterWithPaths textColors x[1] x[2] FileSaver.saver
         | x -> printfn $"Unknown command {x}"
     | _ ->
         printfn "Unknown input arguments, what do you want to do?"
-        mainMenu()
+        mainMenu textColors
 
 
 [<EntryPoint>]
 let main args =
+
+    let textColors =
+        match TextColors.fromJson(
+            """
+            {
+            
+            }
+            """
+        ) with
+        | Ok x -> x
+        | Error e ->
+            printfn "%s" e.Message
+            exit -1
 
     try
         Console.OutputEncoding = Text.Encoding.UTF8 |> ignore
@@ -86,7 +102,7 @@ let main args =
         ()
 
     try
-        processArguments args
+        processArguments textColors args
         0
     with e ->
         printfn "%s" e.Message
